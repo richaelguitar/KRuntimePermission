@@ -1,0 +1,30 @@
+ext{
+    plugins=[
+            application : 'com.android.application',
+            library : 'com.android.library',
+            maven : 'maven'
+    ]
+
+    android=[
+            compileSdkVersion :26,
+            applicationId : "com.kad.kruntimepermission",
+            minSdkVersion:14,
+            targetSdkVersion:26,
+            versionCode:1,
+            versionName:"1.0"
+    ]
+
+    bintray=[
+            maven_common_repo_url:'http://localhost:8088/repository/kad-repo/',
+            maven_user_name : 'admin',
+            maven_pass_word: 'admin123',
+            permissions_group:'com.kad',
+            permissions_artifactid:'permissions',
+            permissions_version:'1.0.1'
+    ]
+
+    dependencies=[
+            appCompat  : 'com.android.support:appcompat-v7:26.1.0',
+            design     : 'com.android.support:design:26.1.0'
+    ]
+}

@@ -1,0 +1,30 @@
+apply plugin: rootProject.ext.plugins.library
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+    }
+
+    resourcePrefix 'permission_'
+}
+
+dependencies {
+    compile rootProject.ext.dependencies.appCompat
+}
+
+apply plugin: rootProject.ext.plugins.maven
+uploadArchives{
+    repositories.mavenDeployer{
+        repository(url:rootProject.ext.bintray.mave_common_repo_url){
+            authentication(userName:rootProject.ext.bintray.maven_user_name,password:rootProject.ext.bintray.maven_pass_word)
+        }
+        pom.groupId = rootProject.ext.bintray.permissions_group
+        pom.artifactId = rootProject.ext.bintray.permissions_artifactid
+        pom.version = rootProject.ext.bintray.permissions_version
+    }
+}
