@@ -21,10 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * <p>Permissions.</p>
- * Created by YanZhenjie on 2017/8/4.
- */
 public final class Permission {
 
     public static final String READ_CALENDAR = "android.permission.READ_CALENDAR";

@@ -18,7 +18,6 @@ package com.kad.kpermissions;
 import java.util.List;
 
 /**
- * Created by YanZhenjie on 2018/1/1.
  */
 
 public interface Action {

@@ -24,7 +24,6 @@ import java.lang.reflect.Method;
 
 /**
  * <p>The source of the request.</p>
- * Created by Yan Zhenjie on 2017/5/1.
  */
 public abstract class Source {
 

@@ -20,7 +20,6 @@ import android.content.Intent;
 
 /**
  * <p>Context Wrapper.</p>
- * Created by Yan Zhenjie on 2017/5/1.
  */
 public class ContextSource extends Source {
 

@@ -29,7 +29,7 @@ import com.kad.kpermissions.source.Source;
 
 /**
  * <p>Setting executor.</p>
- * Created by Yan Zhenjie on 2016/12/28.
+ *
  */
 public class PermissionSetting implements SettingService {
 

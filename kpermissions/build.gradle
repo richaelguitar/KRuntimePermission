@@ -10,21 +10,57 @@ android {
         versionName rootProject.ext.android.versionName
     }
 
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+
     resourcePrefix 'permission_'
 }
 
 dependencies {
-    compile rootProject.ext.dependencies.appCompat
+    implementation rootProject.ext.dependencies.appCompat
+    implementation rootProject.ext.dependencies.design
+    implementation rootProject.ext.dependencies.fragment
 }
 
-apply plugin: rootProject.ext.plugins.maven
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'kpermissions'
+
+    publishedGroupId = 'com.kad'
+    libraryName = 'k-permissions'
+    artifact = 'kpermissions'
+
+    libraryDescription = 'A wrapper for Kad  M Runtim permissions  on Android M'
+
+    siteUrl = 'https://github.com/richaelguitar/KRuntimePermission'
+    gitUrl = 'https://github.com/richaelguitar/KRuntimePermission.git'
+
+    libraryVersion = '0.0.1'
+
+    developerId = 'richaelguitar'
+    developerName = 'richaelguitar'
+    developerEmail = 'richaelguitar@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply plugin: 'maven'
 uploadArchives{
     repositories.mavenDeployer{
-        repository(url:rootProject.ext.bintray.mave_common_repo_url){
-            authentication(userName:rootProject.ext.bintray.maven_user_name,password:rootProject.ext.bintray.maven_pass_word)
+        repository(url:'http://192.168.8.188:8081/repository/kad-repo/'){
+            authentication(userName:'kad',password:'kad123456')
         }
-        pom.groupId = rootProject.ext.bintray.permissions_group
-        pom.artifactId = rootProject.ext.bintray.permissions_artifactid
-        pom.version = rootProject.ext.bintray.permissions_version
+        pom.groupId = 'com.kad'
+        pom.artifactId = 'permission'
+        pom.version = '1.0.1'
     }
 }
+
+//
+//apply from :'https://raw.githubusercontent.com/richaelguitar/GradlePublishRepo/master/install.gradle'
+//apply from :'https://raw.githubusercontent.com/richaelguitar/GradlePublishRepo/master/bintray.gradle'

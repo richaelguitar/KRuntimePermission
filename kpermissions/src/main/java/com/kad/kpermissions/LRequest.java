@@ -29,8 +29,9 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 /**
- * Created by YanZhenjie on 2018/1/25.
+ * 为了兼容用户主动关闭权限的问题，所以需要进行精准校验
  */
+
 class LRequest implements Request {
 
     private static final PermissionChecker CHECKER = new StrictChecker();

@@ -29,12 +29,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-/**
- * <p>
- * Request permission.
- * </p>
- * Created by Yan Zhenjie on 2017/4/27.
- */
 @RequiresApi(api = Build.VERSION_CODES.M)
 public final class PermissionActivity extends Activity {
 

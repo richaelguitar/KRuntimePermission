@@ -15,10 +15,7 @@
  */
 package com.kad.kpermissions;
 
-/**
- * <p>Request executor.</p>
- * Created by Yan Zhenjie on 2016/9/10.
- */
+
 public interface RequestExecutor {
 
     /**

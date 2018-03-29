@@ -19,10 +19,7 @@ import android.content.Context;
 
 import java.util.List;
 
-/**
- * <p>Rationale listener</p>
- * Created by Yan Zhenjie on 2016/9/10.
- */
+
 public interface Rationale {
 
     /**

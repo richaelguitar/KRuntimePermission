@@ -17,20 +17,17 @@ package com.kad.kpermissions;
 
 import android.util.Log;
 
-/**
- * Created by YanZhenjie on 2018/1/14.
- */
-public class ApLog {
+public class KLog {
 
-    private static String sTag = "AndPermission";
+    private static String sTag = "KPermission";
     private static boolean sEnable = false;
 
     public static void setEnable(boolean enable) {
-        ApLog.sEnable = enable;
+        KLog.sEnable = enable;
     }
 
     public static void setTag(String tag) {
-        ApLog.sTag = tag;
+        KLog.sTag = tag;
     }
 
     public static void v(String message) {

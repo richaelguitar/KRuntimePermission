@@ -21,7 +21,6 @@ import android.content.Intent;
 
 /**
  * <p>android.app.Fragment Wrapper.</p>
- * Created by Yan Zhenjie on 2017/5/1.
  */
 public class FragmentSource extends Source {
 

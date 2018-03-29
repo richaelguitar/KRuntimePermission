@@ -21,7 +21,6 @@ import android.support.v4.app.Fragment;
 
 /**
  * <p>android.support.v4.app.Fragment Wrapper.</p>
- * Created by Yan Zhenjie on 2017/5/1.
  */
 public class SupportFragmentSource extends Source {
 

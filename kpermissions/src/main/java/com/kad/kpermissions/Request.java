@@ -17,10 +17,7 @@ package com.kad.kpermissions;
 
 import android.support.annotation.NonNull;
 
-/**
- * <p>Permission request.</p>
- * Created by Yan Zhenjie on 2016/9/9.
- */
+
 public interface Request {
 
     /**

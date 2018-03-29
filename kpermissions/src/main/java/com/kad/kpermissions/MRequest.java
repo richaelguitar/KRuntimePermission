@@ -30,10 +30,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-/**
- * <p>Request permission and callback.</p>
- * Created by Yan Zhenjie on 2016/9/9.
- */
+
 @RequiresApi(api = Build.VERSION_CODES.M)
 class MRequest implements Request, RequestExecutor, PermissionActivity.PermissionListener {
 

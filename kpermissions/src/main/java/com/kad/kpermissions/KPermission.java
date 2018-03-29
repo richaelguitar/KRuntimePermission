@@ -31,11 +31,8 @@ import com.kad.kpermissions.source.SupportFragmentSource;
 
 import java.util.List;
 
-/**
- * <p>Request the entrance.</p>
- * Created by Yan Zhenjie on 2016/9/9.
- */
-public class AndPermission {
+
+public class KPermission {
 
     private static final RequestFactory FACTORY;
 
@@ -267,7 +264,7 @@ public class AndPermission {
         return FACTORY.create(new ContextSource(context));
     }
 
-    private AndPermission() {
+    private KPermission() {
     }
 
     private interface RequestFactory {

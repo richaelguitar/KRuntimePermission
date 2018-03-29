@@ -15,10 +15,7 @@
  */
 package com.kad.kpermissions;
 
-/**
- * <p>Setting Service.</p>
- * Created by Yan Zhenjie on 2016/12/28.
- */
+
 public interface SettingService {
 
     /**
