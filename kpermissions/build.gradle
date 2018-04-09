@@ -23,6 +23,7 @@ dependencies {
     implementation rootProject.ext.dependencies.appCompat
     implementation rootProject.ext.dependencies.design
     implementation rootProject.ext.dependencies.fragment
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 
 ext {
@@ -49,18 +50,22 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 apply plugin: 'maven'
-uploadArchives{
-    repositories.mavenDeployer{
-        repository(url:'http://192.168.8.188:8081/repository/kad-repo/'){
-            authentication(userName:'kad',password:'kad123456')
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: properties.getProperty("repo_url")) {
+            authentication(userName:properties.getProperty("user_name"), password:properties.getProperty("pass_word"))
         }
         pom.groupId = 'com.kad'
         pom.artifactId = 'permission'
-        pom.version = '1.0.1'
+        pom.version = '1.1.1'
     }
 }
 
 //
 //apply from :'https://raw.githubusercontent.com/richaelguitar/GradlePublishRepo/master/install.gradle'
 //apply from :'https://raw.githubusercontent.com/richaelguitar/GradlePublishRepo/master/bintray.gradle'
+

@@ -21,9 +21,9 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven{
-            url 'http://192.168.8.46:8088/repository/kad_repo/'
-        }
+//        maven{
+//            url 'http://192.168.8.46:8088/repository/kad_repo/'
+//        }
     }
 }
 

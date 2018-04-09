@@ -16,11 +16,15 @@
 package com.kad.kpermissions;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -29,44 +33,86 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.kad.kpermissions.service.IPermissionService;
+
+import java.io.Serializable;
+
 @RequiresApi(api = Build.VERSION_CODES.M)
 public final class PermissionActivity extends Activity {
 
-    private static final String KEY_INPUT_PERMISSIONS = "KEY_INPUT_PERMISSIONS";
+    public static final String KEY_INPUT_PERMISSIONS = "KEY_INPUT_PERMISSIONS";
 
     private static PermissionListener sPermissionListener;
+
+    private IPermissionListener iPermissionListener;
+
+    private  String[] permissions;
+
+    private boolean isBind;
 
     /**
      * Request for permissions.
      */
     public static void requestPermission(Context context, String[] permissions, PermissionListener permissionListener) {
-        sPermissionListener = permissionListener;
 
         Intent intent = new Intent(context, PermissionActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(KEY_INPUT_PERMISSIONS, permissions);
+        sPermissionListener = permissionListener;
         context.startActivity(intent);
     }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         invasionStatusBar(this);
-
         Intent intent = getIntent();
-        String[] permissions = intent.getStringArrayExtra(KEY_INPUT_PERMISSIONS);
+        permissions = intent.getStringArrayExtra(KEY_INPUT_PERMISSIONS);
 
-        if (permissions != null && sPermissionListener != null) {
-            requestPermissions(permissions, 1);
-        } else {
+        if (permissions != null ) {
+
+            if(sPermissionListener != null){//同一个进程
+                requestPermissions(permissions, 1);
+            }else{//不同进程
+                if(!isBind&&iPermissionListener==null){
+                    Intent serviceIntent = new Intent(this, IPermissionService.class);
+                    bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE);
+                }
+            }
+        }else{
             finish();
         }
     }
 
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            iPermissionListener = IPermissionListener.Stub.asInterface(service);
+            requestPermissions(permissions, 1);
+            isBind = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            iPermissionListener = null;
+            isBind = false;
+            finish();
+        }
+    };
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (sPermissionListener != null)
+        if (sPermissionListener != null) {//同一个进程
             sPermissionListener.onRequestPermissionsResult(permissions);
+        }else if(iPermissionListener !=null){//不同进程使用AIDL
+            try {
+                iPermissionListener.onRequestPermissionsResult(permissions);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
         finish();
     }
 
@@ -74,6 +120,11 @@ public final class PermissionActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         sPermissionListener = null;
+        if(serviceConnection!=null&&isBind){
+            unbindService(serviceConnection);
+        }
+        isBind = false;
+        iPermissionListener = null;
     }
 
     @Override
@@ -87,7 +138,7 @@ public final class PermissionActivity extends Activity {
     /**
      * permission callback.
      */
-    interface PermissionListener {
+    interface PermissionListener  {
         void onRequestPermissionsResult(@NonNull String[] permissions);
     }
 

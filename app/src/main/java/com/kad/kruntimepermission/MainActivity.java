@@ -1,8 +1,8 @@
 package com.kad.kruntimepermission;
 
 import android.Manifest;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setting = new PermissionSetting(this);
-        button = findViewById(R.id.btn_request_write);
+        button = (Button) findViewById(R.id.btn_request_write);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

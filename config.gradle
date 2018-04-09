@@ -9,10 +9,10 @@ ext{
     ]
 
     android=[
-            compileSdkVersion :26,
+            compileSdkVersion :23,
             applicationId : "com.kad.kruntimepermission",
-            minSdkVersion:14,
-            targetSdkVersion:26,
+            minSdkVersion:9,
+            targetSdkVersion:23,
             versionCode:1,
             versionName:"1.0"
     ]
@@ -40,8 +40,8 @@ ext{
     ]
 
     dependencies=[
-            appCompat  : 'com.android.support:appcompat-v7:26.1.0',
-            design     : 'com.android.support:design:26.1.0',
-            fragment   : 'com.android.support:support-fragment:26.1.0'
+            appCompat  : 'com.android.support:appcompat-v7:24.0.0',
+            design     : 'com.android.support:design:24.0.0',
+            fragment   : 'com.android.support:support-v4:24.0.0'
     ]
 }

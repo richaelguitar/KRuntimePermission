@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">KPermissions</string>
-    <string name="permission_name_calendar">Calendar</string>
-    <string name="permission_name_camera">Camera</string>
-    <string name="permission_name_contacts">Contacts</string>
-    <string name="permission_name_location">Location</string>
-    <string name="permission_name_microphone">Microphone</string>
-    <string name="permission_name_phone">Phone</string>
-    <string name="permission_name_sensors">Body Sensors</string>
-    <string name="permission_name_sms">SMS</string>
-    <string name="permission_name_storage">Storage</string>
+    <string name="permission_name_calendar">日历</string>
+    <string name="permission_name_camera">相机</string>
+    <string name="permission_name_contacts">通讯录</string>
+    <string name="permission_name_location">位置信息</string>
+    <string name="permission_name_microphone">麦克风</string>
+    <string name="permission_name_phone">电话</string>
+    <string name="permission_name_sensors">身体传感器</string>
+    <string name="permission_name_sms">短信</string>
+    <string name="permission_name_storage">存储空间</string>
 </resources>

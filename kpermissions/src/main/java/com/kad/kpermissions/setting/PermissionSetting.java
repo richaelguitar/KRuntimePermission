@@ -15,6 +15,7 @@
  */
 package com.kad.kpermissions.setting;
 
+import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -120,7 +121,7 @@ public class PermissionSetting implements SettingService {
     private static Intent vivoApi(Context context) {
         Intent intent = new Intent();
         intent.putExtra("packagename", context.getPackageName());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             intent.setComponent(new ComponentName("com.vivo.permissionmanager", "com.vivo.permissionmanager.activity.SoftPermissionDetailActivity"));
         } else {
             intent.setComponent(new ComponentName("com.iqoo.secure", "com.iqoo.secure.safeguard.SoftPermissionDetailActivity"));
@@ -139,7 +140,7 @@ public class PermissionSetting implements SettingService {
      * Meizu phone to achieve the method.
      */
     private static Intent meizuApi(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             return defaultApi(context);
         }
         Intent intent = new Intent("com.meizu.safe.security.SHOW_APPSEC");

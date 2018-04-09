@@ -15,6 +15,10 @@
  */
 package com.kad.kpermissions;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -23,7 +27,9 @@ import com.kad.kpermissions.checker.DoubleChecker;
 import com.kad.kpermissions.checker.PermissionChecker;
 import com.kad.kpermissions.checker.StandardChecker;
 import com.kad.kpermissions.source.Source;
+import com.kad.kpermissions.util.AppUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,10 +38,13 @@ import static java.util.Arrays.asList;
 
 
 @RequiresApi(api = Build.VERSION_CODES.M)
-class MRequest implements Request, RequestExecutor, PermissionActivity.PermissionListener {
+public class MRequest implements Request, RequestExecutor {
 
     private static final PermissionChecker CHECKER = new StandardChecker();
     private static final PermissionChecker DOUBLE_CHECKER = new DoubleChecker();
+
+    public static final String ACTION = MRequest.class.getSimpleName();
+
 
     private Source mSource;
 
@@ -46,8 +55,14 @@ class MRequest implements Request, RequestExecutor, PermissionActivity.Permissio
 
     private String[] mDeniedPermissions;
 
+    private PermissionBroadcastReceiver permissionBroadcastReceiver;
+
+    //获取当前进程名
+    private AppUtils appUtils ;
+
     MRequest(Source source) {
         this.mSource = source;
+        this.appUtils =  AppUtils.getInstance(mSource.getContext());
     }
 
     @NonNull
@@ -109,23 +124,39 @@ class MRequest implements Request, RequestExecutor, PermissionActivity.Permissio
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void execute() {
-        PermissionActivity.requestPermission(mSource.getContext(), mDeniedPermissions, this);
+
+        if(!appUtils.isMainLooper()){
+            permissionBroadcastReceiver = new PermissionBroadcastReceiver();
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(ACTION);
+            mSource.getContext().registerReceiver(permissionBroadcastReceiver,filter);
+        }
+
+        PermissionActivity.requestPermission(mSource.getContext(), mDeniedPermissions, permissionListener);
     }
+
+    private PermissionActivity.PermissionListener permissionListener = new PermissionActivity.PermissionListener() {
+        @Override
+        public void onRequestPermissionsResult(@NonNull String[] permissions) {
+            List<String> deniedList = getDeniedPermissions(DOUBLE_CHECKER, mSource, permissions);
+            if (deniedList.isEmpty()) {
+                callbackSucceed();
+            } else {
+                callbackFailed(deniedList);
+            }
+        }
+    };
 
     @Override
     public void cancel() {
-        onRequestPermissionsResult(mDeniedPermissions);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(@NonNull String[] permissions) {
-        List<String> deniedList = getDeniedPermissions(DOUBLE_CHECKER, mSource, permissions);
+        List<String> deniedList = getDeniedPermissions(DOUBLE_CHECKER, mSource, mDeniedPermissions);
         if (deniedList.isEmpty()) {
             callbackSucceed();
         } else {
             callbackFailed(deniedList);
         }
     }
+
 
     /**
      * Callback acceptance status.
@@ -141,6 +172,8 @@ class MRequest implements Request, RequestExecutor, PermissionActivity.Permissio
                 }
             }
         }
+
+        unregisterReceiver();
     }
 
     /**
@@ -149,6 +182,17 @@ class MRequest implements Request, RequestExecutor, PermissionActivity.Permissio
     private void callbackFailed(@NonNull List<String> deniedList) {
         if (mDenied != null) {
             mDenied.onAction(deniedList);
+        }
+        unregisterReceiver();
+    }
+
+    /**
+     * 反注册广播
+     */
+    private void unregisterReceiver(){
+        if(!appUtils.isMainLooper()&&permissionBroadcastReceiver!=null){
+            mSource.getContext().unregisterReceiver(permissionBroadcastReceiver);
+            permissionBroadcastReceiver = null;
         }
     }
 
@@ -176,5 +220,21 @@ class MRequest implements Request, RequestExecutor, PermissionActivity.Permissio
             }
         }
         return rationaleList;
+    }
+
+    private class PermissionBroadcastReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+           String action = intent.getAction();
+           if(ACTION.equalsIgnoreCase(action)){
+               String[] permissions = intent.getStringArrayExtra(PermissionActivity.KEY_INPUT_PERMISSIONS);
+               List<String> deniedList = getDeniedPermissions(DOUBLE_CHECKER, mSource, permissions);
+               if (deniedList.isEmpty()) {
+                   callbackSucceed();
+               } else {
+                   callbackFailed(deniedList);
+               }
+           }
+        }
     }
 }
